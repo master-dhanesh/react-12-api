@@ -15,10 +15,14 @@ app.use(logger("tiny"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// http://localhost:8080/api/user/
-// http://localhost:8080/api/user/create
-
 app.use("/api/user", userRouter);
+
+app.all("*", (req, res, next) => {
+    res.status(404).json({
+        success: false,
+        message: `${req.url} route not found`,
+    });
+});
 
 // server
 app.listen(process.env.PORT, () => {
